@@ -12,6 +12,12 @@ import jwt from "jsonwebtoken";
  */
 export const protect = (req: Request, res: Response, next: NextFunction) => {
   /**
+   * DEBUG (WICHTIG!)
+   * Zeigt ob Postman / Frontend überhaupt den Header sendet
+   */
+  console.log("AUTH HEADER:", req.headers.authorization);
+
+  /**
    * Authorization Header sieht so aus:
    * "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6..."
    */
@@ -31,23 +37,20 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
   try {
     /**
      * Token prüfen + entschlüsseln
-     * JWT_SECRET muss identisch sein wie im Auth-Service
+     * ACCESS_JWT_SECRET muss identisch sein wie im Auth-Service & Render
      */
     const decoded = jwt.verify(token, process.env.ACCESS_JWT_SECRET as string);
 
     /**
      * User-Daten aus Token an Request anhängen
-     * Beispiel decoded:
-     * {
-     *   id: "123",
-     *   email: "test@test.de"
-     * }
      */
     (req as any).user = decoded;
 
     // ✔ alles ok → weiter zur eigentlichen Route
     next();
-  } catch {
+  } catch (err) {
+    console.log("JWT ERROR:", err);
+
     // ❌ Token ungültig oder abgelaufen
     return res.status(401).json({ message: "Token ungültig" });
   }

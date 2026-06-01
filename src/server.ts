@@ -6,12 +6,6 @@ import { connectDB } from "./config/db";
 import leaderboardRoutes from "./routes/leaderboard";
 
 dotenv.config();
-
-dotenv.config();
-
-console.log("TEST ENV MONGO:", process.env.MONGO_URI);
-console.log("TEST ENV JWT:", process.env.ACCESS_JWT_SECRET);
-
 const app = express();
 
 app.use(cors());
