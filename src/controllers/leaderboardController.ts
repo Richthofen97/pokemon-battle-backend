@@ -24,7 +24,15 @@ export const createScore = async (req: Request, res: Response) => {
     const { score, wins, losses } = result.data;
 
     const user = (req as any).user;
-    const userId = typeof user === "string" ? user : user.id;
+
+    const userId = typeof user === "string" ? user : user.sub || user.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "User ID fehlt im Token",
+      });
+    }
 
     const newScore = await Score.create({
       userId,
