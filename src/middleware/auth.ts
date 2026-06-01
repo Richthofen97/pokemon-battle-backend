@@ -33,7 +33,7 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
      * Token prüfen + entschlüsseln
      * JWT_SECRET muss identisch sein wie im Auth-Service
      */
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
+    const decoded = jwt.verify(token, process.env.ACCESS_JWT_SECRET as string);
 
     /**
      * User-Daten aus Token an Request anhängen
