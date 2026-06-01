@@ -8,4 +8,5 @@ const token = jwt.sign(
   process.env.ACCESS_JWT_SECRET as string,
 );
 
+console.log("NEW TOKEN:");
 console.log(token);

@@ -17,7 +17,8 @@ export const createScore = async (req: Request, res: Response) => {
 
     const { score, wins, losses } = result.data;
 
-    const userId = (req as any).user.id;
+    const user = (req as any).user;
+    const userId = typeof user === "string" ? user : user.id;
 
     const newScore = await Score.create({
       userId,
@@ -31,6 +32,7 @@ export const createScore = async (req: Request, res: Response) => {
       data: newScore,
     });
   } catch (err) {
+    console.log("🔥 ERROR:", err);
     return res.status(500).json({
       success: false,
       message: "Server Error",
